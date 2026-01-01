@@ -1,0 +1,1 @@
+ALTER TABLE "tickets" ALTER COLUMN "ticket_number" SET DATA TYPE varchar(15);
