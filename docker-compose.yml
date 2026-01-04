@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: omikunle/ticket-backend:latest
     container_name: ticket-backend
     restart: always
     
@@ -15,9 +16,4 @@ services:
       - "5347:9392"
       
     env_file:
-      - .env # Ensure this file has PORT=9392 and your Supabase DATABASE_URL
-    
-    # REMOVED "depends_on" because Supabase is always "on" in the cloud
-    
-  # REMOVED the "postgres" service block entirely
-  # REMOVED "volumes" block entirely
+      - .env 
