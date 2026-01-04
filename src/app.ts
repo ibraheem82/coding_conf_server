@@ -8,9 +8,10 @@ import { requestLogger } from './middleware/logger.middleware.js';
 
 const app = express();
 
-// CORS Middleware - Allow frontend origins
+// CORS Middleware
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    // UPDATE: Allow your cloud domain. For now, '*' allows everything (good for testing)
+    origin: '*', 
     credentials: true,
 }));
 
@@ -21,7 +22,12 @@ app.use(requestLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Health Check
+// --- NEW: Root Health Check (Crucial for Cloud Load Balancers) ---
+app.get('/', (_req: Request, res: Response) => {
+    res.send('API is running...');
+});
+
+// Existing Health Check
 app.get('/api/health', (_req: Request, res: Response) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
@@ -32,11 +38,12 @@ app.use('/api/tickets', ticketRouter);
 // Global Error Handler (must be last)
 app.use(errorHandler);
 
-// Start Server
-app.listen(env.PORT, () => {
-    logger.info(`🚀 Server running on http://localhost:${env.PORT}`);
+// --- FIXED: Start Server with '0.0.0.0' ---
+app.listen(env.PORT, '0.0.0.0', () => {
+    // I updated the log text so it doesn't lie to you anymore :)
+    logger.info(`🚀 Server running on http://0.0.0.0:${env.PORT}`);
     logger.info(`📍 Environment: ${env.NODE_ENV}`);
-    logger.info(`📧 Brevo API Key: ${env.BREVO_API_KEY ? 'Present (Starts with ' + env.BREVO_API_KEY.substring(0, 4) + ')' : 'MISSING'}`);
+    logger.info(`📧 Brevo API Key: ${env.BREVO_API_KEY ? 'Present' : 'MISSING'}`);
 });
 
 export default app;
