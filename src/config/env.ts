@@ -10,7 +10,7 @@ dotenv.config();
  */
 const envSchema = z.object({
     NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-    PORT: z.coerce.number().default(3000),
+    PORT: z.coerce.number().default(9392),
 
     // Database
     DATABASE_URL: z.url('DATABASE_URL must be a valid URL'),

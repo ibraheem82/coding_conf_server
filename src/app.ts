@@ -37,9 +37,10 @@ app.use('/api/tickets', ticketRouter);
 
 // Global Error Handler (must be last)
 app.use(errorHandler);
+const PORT = Number(process.env.PORT) || env.PORT || 9392;
 
 // --- FIXED: Start Server with '0.0.0.0' ---
-app.listen(env.PORT, '0.0.0.0', () => {
+app.listen(PORT, '0.0.0.0', () => {
     // I updated the log text so it doesn't lie to you anymore :)
     logger.info(`🚀 Server running on http://0.0.0.0:${env.PORT}`);
     logger.info(`📍 Environment: ${env.NODE_ENV}`);
