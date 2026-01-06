@@ -11,7 +11,6 @@ export const createTicketSchema = z.object({
         .max(255, 'Full name must not exceed 255 characters')
         .trim(),
     email: z
-        .string()
         .email('Invalid email address')
         .max(255, 'Email must not exceed 255 characters')
         .toLowerCase()
